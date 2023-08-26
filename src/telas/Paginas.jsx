@@ -7,6 +7,7 @@ import TelaCadastroFuncionarios from "./TelaFuncionarios";
 import "./styles/Tela404.css";
 import TelaCadastroAlunos from "./TelaAlunos";
 import TelaCadastroTurmas from "./TelaTurmas";
+import Home from "./TelaHome";
 
 // PÁGINAS
 
@@ -86,7 +87,7 @@ function PaginaInicial(props) {
   return (
     <Pagina>
       {
-      <p>Home</p>
+      <Home/>
       }
     </Pagina>
   );

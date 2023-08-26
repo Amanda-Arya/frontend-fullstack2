@@ -16,7 +16,7 @@ function App() {
     <div>
       <BrowserRouter>
         <Routes>
-          <Route exact path="/" element={<PaginaInicial />} />
+          <Route exact path="/frontend-fullstack2" element={<PaginaInicial />} />
           <Route
             exact
             path="cadastro-curso"
