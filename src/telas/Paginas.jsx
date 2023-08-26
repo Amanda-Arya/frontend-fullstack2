@@ -86,7 +86,7 @@ function PaginaInicial(props) {
   return (
     <Pagina>
       {
-        // Exibe apenas o menu
+      <p>Home</p>
       }
     </Pagina>
   );
