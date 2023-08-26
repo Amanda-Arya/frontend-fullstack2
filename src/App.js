@@ -47,16 +47,6 @@ function App() {
             path="cadastro-turma"
             element={<PaginaCadastroTurma />}
           />
-           {/*<Route
-            exact
-            path="relatorio-aprendiz"
-            element={<PaginaRelatorioAprendiz />}
-          >
-            <Route
-              path=":aprendizId"
-              element={<PaginaRelatorioAprendiz />}
-            ></Route>
-          </Route> */}
 
           <Route path="*" element={<Pagina404 />} />
         </Routes>

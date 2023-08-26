@@ -158,15 +158,6 @@ export default function FormTurma({
                     );
                   })}
 
-                  {/* <option value="Técnicas em Serviços de Supermercados">
-                    Técnicas em Serviços de Supermercados
-                  </option>
-                  <option value="Informática">
-                    Informática
-                  </option>
-                  <option value="Comunicação e Linguagem e Informática">
-                    Comunicação e Linguagem e Informática
-                  </option> */}
                 </Form.Select>
                 <Form.Control.Feedback type="invalid">
                   Escolha do curso é obrigatório!
