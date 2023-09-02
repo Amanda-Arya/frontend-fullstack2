@@ -10,7 +10,7 @@ const Home = () => {
     <Container className="mt-3">
       <div className="d-flex justify-content-center align-center">
       </div>
-      <h2>Bem vindos, usuários!</h2>
+      <h2>Bem vindo, usuário!</h2>
       <Row className="mt-3">
         <Col className="p-2 col-3">
           <Link to="/">

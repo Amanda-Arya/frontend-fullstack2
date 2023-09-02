@@ -6,6 +6,7 @@ import { urlBase } from "../utils/definicoes";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { rg, cpf, cep, telefone } from "../utils/masks";
+import BarraBusca from "../templates/BarraBusca";
 
 export default function FormAluno({
   onEdit,
@@ -14,6 +15,8 @@ export default function FormAluno({
   getAlunos,
 }) {
   const [validated, setValidated] = useState(false);
+  const [cidadeSelecionada, setCidadeSelecionada] = useState({});
+  const [listaCidades, setListaCidades] = useState({});
   const ref = useRef();
 
   useEffect(() => {
@@ -281,10 +284,13 @@ export default function FormAluno({
             <Col>
               <Form.Group>
                 <Form.Label>Cidade</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="cidade"
-                  placeholder="Digite a cidade"
+                <BarraBusca
+                  placeholder={"Digite a cidade"}
+                  dados={listaCidades}
+                  campoChave={"codigo"}
+                  campoBusca={"nome"}
+                  funcaoSelecao = {setCidadeSelecionada}
+                  valor = {""}
                   required
                 />
                 <Form.Control.Feedback type="invalid">
