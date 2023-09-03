@@ -1,12 +1,11 @@
-import { Container, Col, Form, Row } from "react-bootstrap";
-import { useEffect, useRef, useState } from "react";
-import MenuFormulario from "../templates/MenuFormulario";
-import Cabecalho2 from "../templates/Cabecalho2";
-import { urlBase } from "../utils/definicoes";
-import axios from "axios";
-import { toast } from "react-toastify";
-import { rg, cpf, cep, telefone } from "../utils/masks";
-import BarraBusca from "../templates/BarraBusca";
+import { Container, Col, Form, Row } from 'react-bootstrap';
+import { useEffect, useRef, useState } from 'react';
+import MenuFormulario from '../templates/MenuFormulario';
+import Cabecalho2 from '../templates/Cabecalho2';
+import { urlBase } from '../utils/definicoes';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import { rg, cpf, cep, telefone } from '../utils/masks';
 
 export default function FormAluno({
   onEdit,
@@ -15,9 +14,15 @@ export default function FormAluno({
   getAlunos,
 }) {
   const [validated, setValidated] = useState(false);
-  const [cidadeSelecionada, setCidadeSelecionada] = useState({});
-  const [listaCidades, setListaCidades] = useState({});
+  const [estados, setEstados] = useState([]);
+  const [cidades, setCidades] = useState([]);
   const ref = useRef();
+
+  useEffect(() => {
+    axios.get(`${urlBase}/estados`).then((response) => {
+      setEstados(response.data);
+    });
+  }, []);
 
   useEffect(() => {
     if (onEdit) {
@@ -58,24 +63,27 @@ export default function FormAluno({
   };
 
   const clearForm = (aluno) => {
-    aluno.codigo.value = "";
-    aluno.rg.value = "";
-    aluno.cpf.value = "";
-    aluno.nome_mae.value = "";
-    aluno.dt_nasc.value = "";
-    aluno.escola.value = "";
-    aluno.serie.value = "";
-    aluno.periodo.value = "";
-    aluno.nome.value = "";
-    aluno.telefone.value = "";
-    aluno.email.value = "";
-    aluno.endereco.value = "";
-    aluno.bairro.value = "";
-    aluno.cidade.value = "";
-    aluno.cep.value = "";
-    aluno.uf.value = "";
+    aluno.codigo.value = '';
+    aluno.rg.value = '';
+    aluno.cpf.value = '';
+    aluno.nome_mae.value = '';
+    aluno.dt_nasc.value = '';
+    aluno.escola.value = '';
+    aluno.serie.value = '';
+    aluno.periodo.value = '';
+    aluno.nome.value = '';
+    aluno.telefone.value = '';
+    aluno.email.value = '';
+    aluno.endereco.value = '';
+    aluno.bairro.value = '';
+    aluno.cidade.value = '';
+    aluno.cep.value = '';
+    aluno.uf.value = '';
   };
-
+  const handleCidade = async (id_estado) => {
+    const response = await axios.get(`${urlBase}/cidades/${id_estado}`);
+    setCidades(response.data);
+  };
   const handleBackButton = () => {
     if (onEdit) setOnEdit(null);
     setExibeTabela(true);
@@ -155,7 +163,7 @@ export default function FormAluno({
 
   return (
     <div>
-      <Cabecalho2 texto1={"Cadastro"} texto2={"Aluno"} />
+      <Cabecalho2 texto1={'Cadastro'} texto2={'Aluno'} />
       <Container className="mt-3">
         <Form
           method="POST"
@@ -281,61 +289,47 @@ export default function FormAluno({
                 </Form.Control.Feedback>
               </Form.Group>
             </Col>
-            <Col>
-              <Form.Group>
-                <Form.Label>Cidade</Form.Label>
-                <BarraBusca
-                  placeholder={"Digite a cidade"}
-                  dados={listaCidades}
-                  campoChave={"codigo"}
-                  campoBusca={"nome"}
-                  funcaoSelecao = {setCidadeSelecionada}
-                  valor = {""}
-                  required
-                />
-                <Form.Control.Feedback type="invalid">
-                  Cidade do aluno é obrigatório!
-                </Form.Control.Feedback>
-              </Form.Group>
-            </Col>
           </Row>
           <Row className="mb-3">
             <Col>
               <Form.Group>
-                <Form.Label>UF</Form.Label>
-                <Form.Select name="uf" required>
+                <Form.Label>Estado</Form.Label>
+                <Form.Control
+                  as="select"
+                  name="uf"
+                  required
+                  onChange={(e) => handleCidade(e.currentTarget.value)}
+                >
                   <option value="">Selecione</option>
-                  <option value="AC">Acre</option>
-                  <option value="AL">Alagoas</option>
-                  <option value="AP">Amapá</option>
-                  <option value="AM">Amazonas</option>
-                  <option value="BA">Bahia</option>
-                  <option value="CE">Ceará</option>
-                  <option value="DF">Distrito Federal</option>
-                  <option value="ES">Espírito Santo</option>
-                  <option value="GO">Goiás</option>
-                  <option value="MA">Maranhão</option>
-                  <option value="MT">Mato Grosso</option>
-                  <option value="MS">Mato Grosso do Sul</option>
-                  <option value="MG">Minas Gerais</option>
-                  <option value="PA">Pará</option>
-                  <option value="PB">Paraíba</option>
-                  <option value="PR">Paraná</option>
-                  <option value="PE">Pernambuco</option>
-                  <option value="PI">Piauí</option>
-                  <option value="RJ">Rio de Janeiro</option>
-                  <option value="RN">Rio Grande do Norte</option>
-                  <option value="RS">Rio Grande do Sul</option>
-                  <option value="RO">Rondônia</option>
-                  <option value="RR">Roraima</option>
-                  <option value="SC">Santa Catarina</option>
-                  <option value="SP">São Paulo</option>
-                  <option value="SE">Sergipe</option>
-                  <option value="TO">Tocantins</option>
-                  <option value="EX">Estrangeiro</option>
-                </Form.Select>
+                  {estados.map((estado) => {
+                    return (
+                      <option value={estado.id} key={estado.id}>
+                        {estado.nome}
+                      </option>
+                    );
+                  })}
+                </Form.Control>
                 <Form.Control.Feedback type="invalid">
                   UF é obrigatório!
+                </Form.Control.Feedback>
+              </Form.Group>
+            </Col>
+            <Col>
+              <Form.Group>
+                <Form.Label>Cidade</Form.Label>
+                <Form.Select name="cidade" required>
+                  <option value="">Selecione</option>
+                  {cidades.map((cidade) => {
+                    return (
+                      <option value={cidade.id} key={cidade.id}>
+                        {cidade.nome}
+                      </option>
+                    );
+                  })}
+                </Form.Select>
+
+                <Form.Control.Feedback type="invalid">
+                  Cidade do aluno é obrigatório!
                 </Form.Control.Feedback>
               </Form.Group>
             </Col>
