@@ -4,11 +4,11 @@ import {
   Pagina404,
   PaginaCadastroEmpresa,
   PaginaInicial,
-  // PaginaRelatorioAprendiz,
   PaginaCadastroFuncionario,
   PaginaCadastroCargo,
   PaginaCadastroAluno,
-  PaginaCadastroTurma
+  PaginaCadastroTurma,
+  PaginaCadastroMatricula
 } from "./telas/Paginas";
 
 function App() {
@@ -47,7 +47,12 @@ function App() {
             path="cadastro-turma"
             element={<PaginaCadastroTurma />}
           />
-
+          <Route
+            exact
+            path="cadastro-matricula"
+            element={<PaginaCadastroMatricula />}
+          
+          />
           <Route path="*" element={<Pagina404 />} />
         </Routes>
       </BrowserRouter>

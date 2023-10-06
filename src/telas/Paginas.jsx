@@ -7,6 +7,7 @@ import TelaCadastroFuncionarios from "./TelaFuncionarios";
 import "./styles/Tela404.css";
 import TelaCadastroAlunos from "./TelaAlunos";
 import TelaCadastroTurmas from "./TelaTurmas";
+import TelaCadastroMatriculas from "./TelaMatricula";
 import Home from "./TelaHome";
 
 // PÁGINAS
@@ -69,6 +70,16 @@ function PaginaCadastroTurma(props) {
   );
 }
 
+function PaginaCadastroMatricula(props){
+  const obj = {texto1: "Cadastro", texto2: "Matrícula"};
+
+  return(
+    <Pagina obj={obj}>
+      <TelaCadastroMatriculas/>
+    </Pagina>
+  )
+}
+
 function Pagina404(props) {
   return (
     <Pagina>
@@ -102,4 +113,5 @@ export {
   PaginaCadastroFuncionario,
   PaginaCadastroAluno,
   PaginaCadastroCargo,
+  PaginaCadastroMatricula
 };

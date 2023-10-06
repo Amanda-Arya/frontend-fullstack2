@@ -50,8 +50,8 @@ export default function Menu() {
                     Turma
                   </NavDropdown.Item>
                 </NavDropdown>
-                <Nav.Link as={Link} to="/relatorio-aprendiz">
-                  Relatório do Aprendiz
+                <Nav.Link as={Link} to="/cadastro-matricula">
+                  Matrícula
                 </Nav.Link>
               </Nav>
             </Offcanvas.Body>

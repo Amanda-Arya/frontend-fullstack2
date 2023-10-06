@@ -226,9 +226,6 @@ export default function FormTurma({
                     );
                   })}
 
-                  {/* <option value="Aglaê">Aglaê</option>
-                  <option value="Renato">Renato</option>
-                  <option value="Mario">Mario</option> */}
                 </Form.Select>
                 <Form.Control.Feedback type="invalid">
                   Professor da turma é obrigatório!
