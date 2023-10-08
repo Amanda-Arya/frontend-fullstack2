@@ -5,70 +5,69 @@ import { toast } from "react-toastify";
 import FormMatricula from "../formularios/FormMatricula";
 import TabelaCadastroMatriculas from "../tabelas/TabelaMatriculas";
 
-export default function TelaCadastroMatriculas(props){
-    const [exibeTabela, setExibeTabela] = useState(null);
-    const [onEdit, setOnEdit] = useState([]);
+export default function TelaCadastroMatriculas(props) {
+    const [exibeTabela, setExibeTabela] = useState(true);
+    const [onEdit, setOnEdit] = useState();
     const [matriculas, setMatriculas] = useState([]);
     const [cursos, setCursos] = useState([]);
     const [alunos, setAlunos] = useState([]);
     const [filtro, setFiltro] = useState("");
 
-    const getMatriculas = async () =>{
+    const getMatriculas = async () => {
 
-        try{
+        try {
             const res = await axios.get(urlBase + "/matriculas");
             setMatriculas(res.data);
 
-        }catch(error){
+        } catch (error) {
             toast.error(error);
         }
     };
 
     const getCursos = async () => {
 
-        try{
+        try {
 
             const res = await axios.get(urlBase + "/cursos");
             setCursos(res.data);
-        }catch(error){
+        } catch (error) {
             toast.error(error);
         }
     };
     const getAlunos = async () => {
 
-        try{
+        try {
 
             const res = await axios.get(urlBase + "/alunos");
             setAlunos(res.data);
-        }catch(error){
+        } catch (error) {
             toast.error(error);
         }
     };
 
-    useEffect(()=>{
+    useEffect(() => {
         getMatriculas();
         getCursos();
         getAlunos();
-    },[setMatriculas]);
+    }, [setMatriculas]);
 
-    return exibeTabela ?(
-
+    return exibeTabela ? (
         <TabelaCadastroMatriculas
-        matriculas={matriculas}
-        setMatriculas = {setMatriculas}
-        setOnEdit ={setOnEdit}
-        filtro ={filtro}
-        aoMudarFiltro = {setFiltro}
-        setExibeTabela = {setExibeTabela}
+            matriculas={matriculas}
+            setMatriculas={setMatriculas}
+            setOnEdit={setOnEdit}
+            filtro={filtro}
+            aoMudarFiltro={setFiltro}
+            setExibeTabela={setExibeTabela}
         />
-    ):(
+    ) : (
         <FormMatricula
-        cursos={cursos}
-        alunos = {alunos}
-        onEdit={onEdit}
-        setOnEdit={setOnEdit}
-        getMatriculas={getMatriculas}
-        setExibirTabela={setExibeTabela}
+            cursos={cursos}
+            alunos={alunos}
+            onEdit={onEdit}
+            setOnEdit={setOnEdit}
+            getMatriculas={getMatriculas}
+            setExibirTabela={setExibeTabela}
         />
     );
 

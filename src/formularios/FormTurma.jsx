@@ -1,10 +1,12 @@
-import { Container, Col, Form, Row } from "react-bootstrap";
+import { Container, Col, Form, Row, InputGroup } from "react-bootstrap";
 import { useEffect, useRef, useState } from "react";
 import MenuFormulario from "../templates/MenuFormulario";
 import Cabecalho2 from "../templates/Cabecalho2";
 import { urlBase } from "../utils/definicoes";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export default function FormTurma({
   cursos,
@@ -15,6 +17,7 @@ export default function FormTurma({
   getTurmas,
 }) {
   const [validated, setValidated] = useState(false);
+  const [listaProfessores, setListaProfessores] = useState([]);
   const ref = useRef();
 
   useEffect(() => {
@@ -28,7 +31,11 @@ export default function FormTurma({
       turma.status.value = onEdit.status;
       turma.vagas.value = onEdit.vagas;
       turma.funcionario.value = onEdit.Funcionario_codigo;
-      turma.curso.value = onEdit.Curso_codigo;
+      turma.curso.value = onEdit.curso.codigo;
+      if (Array.isArray(onEdit.funcionarios) && onEdit.funcionarios.length > 0) {
+        const codigos = onEdit.funcionarios.map((item) => item.codigo);
+        setListaProfessores(codigos);
+      }
     }
   }, [onEdit]);
 
@@ -36,6 +43,22 @@ export default function FormTurma({
     if (onEdit) setOnEdit(null);
     setExibeTabela(true);
   };
+
+  const limpaCampos = () => {
+
+    const turma = ref.current;
+    turma.codigo.value = "";
+    turma.periodo.value = "";
+    turma.ano_letivo.value = "";
+    turma.dt_inicio.value = "";
+    turma.dt_fim.value = "";
+    turma.status.value = "";
+    turma.vagas.value = "";
+    turma.funcionario.value = "";
+    turma.curso.value = "";
+
+    setListaProfessores([]);
+  }
 
   const handleSubmit = async (event) => {
     const form = event.currentTarget;
@@ -54,10 +77,13 @@ export default function FormTurma({
             dt_fim: turma.dt_fim.value,
             status: turma.status.value,
             vagas: turma.vagas.value,
-            funcionario: turma.funcionario.value,
+            funcionarios: listaProfessores,
             curso: turma.curso.value,
           })
-          .then(({ data }) => toast.info(data.mensagem))
+          .then(({ data }) => {
+            limpaCampos();
+            toast.info(data.mensagem);
+          })
           .catch(({ response }) => toast.error(response.data.mensagem));
       } else {
         await axios
@@ -69,28 +95,39 @@ export default function FormTurma({
             dt_fim: turma.dt_fim.value,
             status: turma.status.value,
             vagas: turma.vagas.value,
-            funcionario: turma.funcionario.value,
+            funcionarios: listaProfessores,
             curso: turma.curso.value,
           })
-          .then(({ data }) => toast.info(data.mensagem))
+          .then(({ data }) => {
+            limpaCampos();
+            toast.info(data.mensagem);
+          })
           .catch(({ response }) => toast.error(response.data.mensagem));
       }
-
-      turma.codigo.value = "";
-      turma.periodo.value = "";
-      turma.ano_letivo.value = "";
-      turma.dt_inicio.value = "";
-      turma.dt_fim.value = "";
-      turma.status.value = "";
-      turma.vagas.value = "";
-      turma.funcionario.value = "";
-      turma.curso.value = "";
-
       getTurmas();
     } else {
       setValidated(true);
     }
   };
+
+  function handleAddProfessor() {
+    const turma = ref.current;
+    if (turma?.funcionario?.value !== "") {
+      if (!listaProfessores.some((item) => item == turma?.funcionario?.value))
+        setListaProfessores(state => [...state, turma.funcionario.value])
+    }
+  }
+
+  function handleRemoverProfessor(professor) {
+    const index = listaProfessores.findIndex((item) => item == professor);
+    if (index > -1) {
+      listaProfessores.splice(index, 1);
+      setListaProfessores([...listaProfessores]);
+    }
+  }
+
+  const buscaNomeProfessor = (professor) =>
+    funcionarios.find((funcionario) => funcionario.codigo_funcionario == professor)?.nome;
 
   return (
     <div>
@@ -214,27 +251,41 @@ export default function FormTurma({
           </Row>
           <Row className="mb-3">
             <Col>
+
               <Form.Group>
                 <Form.Label>Professor</Form.Label>
-                <Form.Select name="funcionario" required>
-                  <option value="">Selecione</option>
-                  {funcionarios.map((funcionario, i) => {
-                    return (
-                      <option value={funcionario.codigo_funcionario} key={i}>
-                        {funcionario.nome}
-                      </option>
-                    );
-                  })}
-
-                </Form.Select>
-                <Form.Control.Feedback type="invalid">
-                  Professor da turma é obrigatório!
-                </Form.Control.Feedback>
+                <InputGroup>
+                  <Form.Select name="funcionario">
+                    <option value="">Selecione</option>
+                    {funcionarios.map((funcionario, i) => {
+                      return (
+                        <option value={funcionario.codigo_funcionario} key={i}>
+                          {funcionario.nome}
+                        </option>
+                      );
+                    })}
+                  </Form.Select>
+                  <InputGroup.Text onClick={() => handleAddProfessor()}>
+                    <FontAwesomeIcon icon={faPlus} />
+                  </InputGroup.Text>
+                  <Form.Control.Feedback type="invalid">
+                    Professor da turma é obrigatório!
+                  </Form.Control.Feedback>
+                </InputGroup>
               </Form.Group>
+            </Col>
+          </Row>
+          <Row className="mb-3">
+            <Col>
+              <ul>
+                {listaProfessores.map((professor) => (
+                  <li key={professor}>{buscaNomeProfessor(professor)} <FontAwesomeIcon icon={faTrash} onClick={() => handleRemoverProfessor(professor)} /></li>
+                ))}
+              </ul>
             </Col>
           </Row>
         </Form>
       </Container>
-    </div>
+    </div >
   );
 }

@@ -78,8 +78,7 @@ export default function TabelaCadastroTurmas({
               <th>#</th>
               <th>Período</th>
               <th>Ano Letivo</th>
-              <th>Cursos</th>
-              <th>Professor</th>
+              <th>Curso</th>
               <th>Início</th>
               <th>Status</th>
               <th>Vagas</th>
@@ -99,9 +98,8 @@ function LinhaTurma({ turma, handleEdit, handleConfirm }) {
       <td>{turma.codigo}</td>
       <td>{turma.periodo}</td>
       <td>{turma.ano_letivo}</td>
-      <td>{turma.curso_nome}</td>
-      <td>{turma.funcionario_nome}</td>
-      <td>{turma.dt_inicio}</td>
+      <td>{turma.curso.nome}</td>
+      <td>{new Date(turma.dt_inicio).toLocaleDateString()}</td>
       <td>{turma.status}</td>
       <td>{turma.vagas}</td>
       <td>

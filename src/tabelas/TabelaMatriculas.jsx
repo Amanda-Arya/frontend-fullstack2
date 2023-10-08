@@ -18,8 +18,6 @@ export default function TabelaCadastroMatriculas({
     setExibeTabela,
 }) {
 
-    const linhas = [];
-
     const confirmDelete = (codigo) => {
         if (window.confirm(`Confirma a exclusão do item ${codigo}?`)) {
             handleDelete(codigo);
@@ -42,21 +40,6 @@ export default function TabelaCadastroMatriculas({
         setExibeTabela(false);
     };
 
-
-    matriculas.forEach((matricula, i) => {
-        if (matricula.dataMatricula.indexOf(filtro) === -1) {
-            return;
-        }
-        linhas.push(
-            <LinhaMatricula
-                matricula={matricula}
-                key={i}
-                handleEdit={handleEdit}
-                handleConfirm={confirmDelete}
-            />
-        );
-
-    });
     return (
         <div>
             <Cabecalho2 texto1={"Consulta"} texto2={"Matriculas"} />
@@ -67,7 +50,7 @@ export default function TabelaCadastroMatriculas({
                         <Form.Control
                             type="text"
                             value={filtro}
-                            placeholder="data matrícula..."
+                            placeholder="Pesquise o aluno..."
                             onChange={(e) => aoMudarFiltro(e.target.value)}
                             style={{ width: "300px" }}
 
@@ -83,27 +66,20 @@ export default function TabelaCadastroMatriculas({
                             <th>Curso</th>
                         </tr>
                     </thead>
-                    <tbody>{linhas}</tbody>
-
+                    <tbody>{matriculas.map((matricula) => (
+                        <tr key={matricula.cod_matricula}>
+                            <td>{matricula.cod_matricula}</td>
+                            <td>{matricula.dataMatricula}</td>
+                            <td>{matricula.aluno.nome}</td>
+                            <td>{matricula.curso.nome}</td>
+                            <td>
+                                <FontAwesomeIcon icon={faPenToSquare} onClick={() => handleEdit(matricula)} />
+                                <FontAwesomeIcon icon={faTrash} onClick={() => confirmDelete(matricula.cod_matricula)} />
+                            </td>
+                        </tr>
+                    ))}</tbody>
                 </Table>
-
             </Container>
         </div>
     );
 }
-function LinhaMatricula({ matricula, handleEdit, handleConfirm }) {
-    return (
-      <tr>
-        <td>{matricula.codigo}</td>
-        <td>{matricula.dataMatricula}</td>
-        <td>{matricula.aluno}</td>
-        <td>{matricula.curso}</td>
-        <td>
-         
-          <FontAwesomeIcon icon={faPenToSquare} onClick={() => handleEdit(matricula)} />
-          <FontAwesomeIcon icon={faTrash} onClick={() => handleConfirm(matricula.codigo)} />
-          
-        </td>
-      </tr>
-    );
-  }
