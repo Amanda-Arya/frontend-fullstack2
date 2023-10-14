@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/frontend-fullstack2/static/css/main.eaec8eb0.css",
-    "main.js": "/frontend-fullstack2/static/js/main.7ff2e40f.js",
+    "main.js": "/frontend-fullstack2/static/js/main.ce5d454f.js",
     "static/media/erro404.jpg": "/frontend-fullstack2/static/media/erro404.84f2ce20f06cff2f5030.jpg",
     "static/media/lato-latin-300.woff": "/frontend-fullstack2/static/media/lato-latin-300.4d96f9e685a54d1ef6cf.woff",
     "static/media/lato-latin-700italic.woff": "/frontend-fullstack2/static/media/lato-latin-700italic.be7f3d32a138ba64b9d0.woff",
@@ -25,10 +25,10 @@
     "static/media/lato-latin-100italic.woff2": "/frontend-fullstack2/static/media/lato-latin-100italic.89b95baaf00652c7c3af.woff2",
     "index.html": "/frontend-fullstack2/index.html",
     "main.eaec8eb0.css.map": "/frontend-fullstack2/static/css/main.eaec8eb0.css.map",
-    "main.7ff2e40f.js.map": "/frontend-fullstack2/static/js/main.7ff2e40f.js.map"
+    "main.ce5d454f.js.map": "/frontend-fullstack2/static/js/main.ce5d454f.js.map"
   },
   "entrypoints": [
     "static/css/main.eaec8eb0.css",
-    "static/js/main.7ff2e40f.js"
+    "static/js/main.ce5d454f.js"
   ]
 }
