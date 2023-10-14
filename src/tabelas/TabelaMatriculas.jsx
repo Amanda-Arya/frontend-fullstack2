@@ -19,18 +19,20 @@ export default function TabelaCadastroMatriculas({
 }) {
 
     const confirmDelete = (codigo) => {
+       
         if (window.confirm(`Confirma a exclusão do item ${codigo}?`)) {
             handleDelete(codigo);
         };
     };
 
     const handleDelete = async (codigo) => {
+       
         await axios
             .delete(`${urlBase}/matriculas/${codigo}`)
             .then(({ data }) => {
                 const newLista = matriculas.filter((matricula) => matricula.codigo !== codigo);
                 setMatriculas(newLista);
-                toast.info(data.mennsagem);
+                toast.info(data.mensagem);
             }).catch(({ response }) => toast.error(response.data.mensagem));
         setOnEdit(null);
     };
@@ -45,7 +47,7 @@ export default function TabelaCadastroMatriculas({
             <Cabecalho2 texto1={"Consulta"} texto2={"Matriculas"} />
             <Container className="mt-3">
                 <div className="d-flex mb-3 justify-content-between">
-                    <BotaoNovo botaoNovo={() => setExibeTabela(false)} />
+                    <BotaoNovo acaoBtnNovo={() => setExibeTabela(false)} />
                     <Form>
                         <Form.Control
                             type="text"
@@ -64,16 +66,19 @@ export default function TabelaCadastroMatriculas({
                             <th>Data Matrícula</th>
                             <th>Aluno</th>
                             <th>Curso</th>
+                            <th>Turma</th>
+                            <th>Ações</th>
                         </tr>
                     </thead>
                     <tbody>{matriculas.map((matricula) => (
                         <tr key={matricula.cod_matricula}>
                             <td>{matricula.cod_matricula}</td>
-                            <td>{matricula.dataMatricula}</td>
+                            <td>{new Date(matricula.dataMatricula).toLocaleDateString()}</td>
                             <td>{matricula.aluno.nome}</td>
                             <td>{matricula.curso.nome}</td>
+                            <td>{matricula.turma.codigo_turma}</td>
                             <td>
-                                <FontAwesomeIcon icon={faPenToSquare} onClick={() => handleEdit(matricula)} />
+                                <FontAwesomeIcon icon={faPenToSquare} onClick={() => handleEdit(matricula)} />{""}
                                 <FontAwesomeIcon icon={faTrash} onClick={() => confirmDelete(matricula.cod_matricula)} />
                             </td>
                         </tr>

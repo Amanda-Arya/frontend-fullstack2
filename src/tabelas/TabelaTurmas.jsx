@@ -95,7 +95,7 @@ export default function TabelaCadastroTurmas({
 function LinhaTurma({ turma, handleEdit, handleConfirm }) {
   return (
     <tr>
-      <td>{turma.codigo}</td>
+      <td>{turma.codigo_turma}</td>
       <td>{turma.periodo}</td>
       <td>{turma.ano_letivo}</td>
       <td>{turma.curso.nome}</td>
@@ -106,7 +106,7 @@ function LinhaTurma({ turma, handleEdit, handleConfirm }) {
         <AiOutlineEdit size={20} onClick={() => handleEdit(turma)} />{" "}
         <AiOutlineDelete
           size={20}
-          onClick={() => handleConfirm(turma.codigo)}
+          onClick={() => handleConfirm(turma.codigo_turma)}
         />
       </td>
     </tr>

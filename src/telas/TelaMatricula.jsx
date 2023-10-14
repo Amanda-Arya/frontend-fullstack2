@@ -7,10 +7,11 @@ import TabelaCadastroMatriculas from "../tabelas/TabelaMatriculas";
 
 export default function TelaCadastroMatriculas(props) {
     const [exibeTabela, setExibeTabela] = useState(true);
-    const [onEdit, setOnEdit] = useState();
+    const [onEdit, setOnEdit] = useState(false);
     const [matriculas, setMatriculas] = useState([]);
     const [cursos, setCursos] = useState([]);
     const [alunos, setAlunos] = useState([]);
+    const [turmas, setTurmas] = useState([]);
     const [filtro, setFiltro] = useState("");
 
     const getMatriculas = async () => {
@@ -45,10 +46,21 @@ export default function TelaCadastroMatriculas(props) {
         }
     };
 
+    const getTurmas = async () =>{
+
+        try {
+            const res = await axios.get(urlBase + "/turmas");
+            setTurmas(res.data);
+        } catch (error) {
+            toast.error(error);
+        }
+    }
+
     useEffect(() => {
         getMatriculas();
         getCursos();
         getAlunos();
+        getTurmas();
     }, [setMatriculas]);
 
     return exibeTabela ? (
@@ -63,6 +75,7 @@ export default function TelaCadastroMatriculas(props) {
     ) : (
         <FormMatricula
             cursos={cursos}
+            turmas ={turmas}
             alunos={alunos}
             onEdit={onEdit}
             setOnEdit={setOnEdit}

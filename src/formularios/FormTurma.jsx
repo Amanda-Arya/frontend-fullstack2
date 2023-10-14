@@ -23,7 +23,7 @@ export default function FormTurma({
   useEffect(() => {
     if (onEdit) {
       const turma = ref.current;
-      turma.codigo.value = onEdit.codigo;
+      turma.codigo.value = onEdit.codigo_turma;
       turma.periodo.value = onEdit.periodo;
       turma.ano_letivo.value = onEdit.ano_letivo;
       turma.dt_inicio.value = onEdit.dt_inicio;
@@ -70,7 +70,7 @@ export default function FormTurma({
       if (onEdit) {
         await axios
           .put(urlBase + "/turmas/", {
-            codigo: turma.codigo.value,
+            codigo_turma: turma.codigo.value,
             periodo: turma.periodo.value,
             ano_letivo: turma.ano_letivo.value,
             dt_inicio: turma.dt_inicio.value,
@@ -88,7 +88,7 @@ export default function FormTurma({
       } else {
         await axios
           .post(urlBase + "/turmas/", {
-            codigo: turma.codigo.value,
+            codigo_turma: turma.codigo.value,
             periodo: turma.periodo.value,
             ano_letivo: turma.ano_letivo.value,
             dt_inicio: turma.dt_inicio.value,

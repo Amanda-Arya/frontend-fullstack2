@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 
 export default function FormMatricula({
     cursos,
+    turmas,
     onEdit,
     setExibirTabela,
     setOnEdit,
@@ -17,8 +18,9 @@ export default function FormMatricula({
 }) {
 
     const [validated, setValidated] = useState(false);
-    const [alunos, setAlunos] = useState([]);
+    const [alunos, setAlunos] = useState([]);  
     const [alunoSelecionado, setAlunoSelecionado] = useState();
+    const [cursoSelecionado, setCursoSelecionado] = useState();
     const ref = useRef();
 
     useEffect(() => {
@@ -37,7 +39,14 @@ export default function FormMatricula({
             const matricula = ref.current;
             matricula.aluno.value = alunoSelecionado.codigo;
         }
-    }, [alunoSelecionado])
+    }, [alunoSelecionado]);
+
+    useEffect(() => {
+        if (cursoSelecionado) {
+            const matricula = ref.current;
+            matricula.curso.value = cursoSelecionado.codigo;
+        }
+    }, [cursoSelecionado])
 
     useEffect(() => {
         if (onEdit) {
@@ -46,7 +55,9 @@ export default function FormMatricula({
             matricula.dataMatricula.value = onEdit.dataMatricula?.slice(0, 10);
             matricula.aluno.value = onEdit.aluno.nome;
             matricula.curso.value = onEdit.curso.codigo;
+            matricula.turma.value = onEdit.turma.codigo_turma;
             setAlunoSelecionado(onEdit.aluno);
+            setCursoSelecionado(onEdit.curso);
         }
     }, [onEdit]);
 
@@ -56,11 +67,20 @@ export default function FormMatricula({
     };
 
     const handleSubmit = async (event) => {
-        debugger;
+       
         const form = event.currentTarget;
         event.preventDefault();
 
         const matricula = ref.current;
+
+    const limpaCampos = () =>{
+
+        matricula.codigo.value = "";
+        matricula.dataMatricula.value = "";
+        matricula.aluno.value = "";
+        matricula.curso.value = "";
+        matricula.turma.value ="";
+    }
 
         if (form.checkValidity()) {
             if (onEdit) {
@@ -70,32 +90,34 @@ export default function FormMatricula({
                         dataMatricula: matricula.dataMatricula.value,
                         cod_aluno: alunoSelecionado.codigo,
                         cod_curso: matricula.curso.value,
+                        cod_turma: matricula.turma.value,
                     })
-                    .then(({ data }) => toast.info(data.mensagem))
+                    .then(({ data }) => {
+                        limpaCampos();
+                        toast.info(data.mensagem)
+                    })
                     .catch(({ response }) => toast.error(response.data.mensagem));
             } else {
+                
                 await axios
+                    
                     .post(urlBase + "/matriculas/", {
                         cod_matricula: matricula.codigo.value,
                         dataMatricula: matricula.dataMatricula.value,
-                        cod_aluno: matricula.aluno.value,
+                        cod_aluno: alunoSelecionado.codigo,
                         cod_curso: matricula.curso.value,
-
+                        cod_turma: matricula.turma.value,
                     })
                     .then(({ data }) => toast.info(data.mensagem))
                     .catch(({ response }) => toast.error(response.data.mensagem));
             }
-            matricula.codigo.value = "";
-            matricula.dataMatricula.value = "";
-            matricula.aluno.value = "";
-            matricula.curso.value = "";
+           
 
             getMatriculas();
         } else {
             setValidated(true);
         }
     };
-
 
     return (
         <div>
@@ -136,11 +158,11 @@ export default function FormMatricula({
                                     placeholder={'Selecione o aluno'}
                                     dados={alunos}
                                     name={"aluno"}
-                                    campoChave={"cpf"}
+                                    campoChave={"codigo"}
                                     campoBusca={"nome"}
                                     funcaoSelecao={setAlunoSelecionado}
                                     ref={ref}
-                                    valor={onEdit.aluno.nome}
+                                    valor={onEdit?.aluno?.nome}
                                 />
                                 <Form.Control.Feedback type="invalid">
                                     aluno é obrigatório!
@@ -149,6 +171,26 @@ export default function FormMatricula({
                         </Col>
                     </Row>
                     <Row>
+                    <Col>
+                            <Form.Group>
+                                <Form.Label>Curso</Form.Label>
+                                <SearchBar
+                                    placeholder={'Selecione o curso'}
+                                    dados={cursos}
+                                    name={"curso"}
+                                    campoChave={"codigo"}
+                                    campoBusca={"nome"}
+                                    funcaoSelecao={setCursoSelecionado}
+                                    ref={ref}
+                                    valor={onEdit?.curso?.nome}
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                    Curso é obrigatório!
+                                </Form.Control.Feedback>
+                            </Form.Group>
+                        </Col>
+                    </Row>
+                    {/* <Row className="mt-3">
                         <Col>
                             <Form.Group>
                                 <Form.Label>Curso</Form.Label>
@@ -158,6 +200,20 @@ export default function FormMatricula({
                                 </Form.Select>
                                 <Form.Control.Feedback type="invalid">
                                     Escolha do curso é obrigatório!
+                                </Form.Control.Feedback>
+                            </Form.Group>
+                        </Col>
+                    </Row> */}
+                    <Row className="mt-3">
+                        <Col>
+                            <Form.Group>
+                                <Form.Label>Turma</Form.Label>
+                                <Form.Select name="turma" required>
+                                    <option value="" disabled selected>Selecione</option>
+                                    {turmas.map((turma, i) => <option value={turma.codigo_turma} key={i}>{turma.curso.nome} - {turma.ano_letivo}</option>)}
+                                </Form.Select>
+                                <Form.Control.Feedback type="invalid">
+                                    Escolha da turma é obrigatório!
                                 </Form.Control.Feedback>
                             </Form.Group>
                         </Col>
