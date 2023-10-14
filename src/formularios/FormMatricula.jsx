@@ -207,7 +207,7 @@ export default function FormMatricula({
                     <Row className="mt-3">
                         <Col>
                             <Form.Group>
-                                <Form.Label>Turma</Form.Label>
+                                <Form.Label>Turma </Form.Label>
                                 <Form.Select name="turma" required>
                                     <option value="" disabled selected>Selecione</option>
                                     {turmas.map((turma, i) => <option value={turma.codigo_turma} key={i}>{turma.curso.nome} - {turma.ano_letivo}</option>)}
