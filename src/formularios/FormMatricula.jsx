@@ -37,14 +37,14 @@ export default function FormMatricula({
     useEffect(() => {
         if (alunoSelecionado) {
             const matricula = ref.current;
-            matricula.aluno.value = alunoSelecionado.codigo;
+            matricula.aluno.value = alunoSelecionado.nome;
         }
     }, [alunoSelecionado]);
 
     useEffect(() => {
         if (cursoSelecionado) {
             const matricula = ref.current;
-            matricula.curso.value = cursoSelecionado.codigo;
+            matricula.curso.value = cursoSelecionado.nome;
         }
     }, [cursoSelecionado])
 
@@ -89,7 +89,7 @@ export default function FormMatricula({
                         cod_matricula: matricula.codigo.value,
                         dataMatricula: matricula.dataMatricula.value,
                         cod_aluno: alunoSelecionado.codigo,
-                        cod_curso: matricula.curso.value,
+                        cod_curso: cursoSelecionado.codigo,
                         cod_turma: matricula.turma.value,
                     })
                     .then(({ data }) => {
@@ -105,7 +105,7 @@ export default function FormMatricula({
                         cod_matricula: matricula.codigo.value,
                         dataMatricula: matricula.dataMatricula.value,
                         cod_aluno: alunoSelecionado.codigo,
-                        cod_curso: matricula.curso.value,
+                        cod_curso: cursoSelecionado.codigo,
                         cod_turma: matricula.turma.value,
                     })
                     .then(({ data }) => toast.info(data.mensagem))
